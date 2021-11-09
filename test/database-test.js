@@ -12,34 +12,51 @@ const pool = new Pool({
     }
 });
 
-describe('The my_fruit_basket_tests database', function () {
+
+describe('The my_fruit_basket_tests database', async function () {
+
+    const fruitBasket = await basket(pool);
     beforeEach(async function () {
         await pool.query('delete from fruit_basket');
     });
 
     it('should be able to get the fruit_name from the fruit_basket', async function () {
 
-        const fruitBasket = basket(pool);
 
-        await fruitBasket.addfruit('Banana', 4.00);
-        assert.deepEqual([{ fruit_name: 'Banana' }], await fruitBasket.getfruit());
+        await fruitBasket.baskets('Apple', 1, 3.00);
+
+        var getIt = await fruitBasket.getFruit('Apple')
+        assert.equal(getIt[0].fruit_name, 'Apple')
+    });
+
+    it('should be abble to update the qty', async function () {
+
+        await fruitBasket.baskets('Apple', 1, 3.00);
+        await fruitBasket.updateFruit('Apple', 1, 3.00);
+        let theupdate = await fruitBasket.getFruit('Apple')
+        assert.deepEqual(2, theupdate[0].qty);
+
+
     });
 
     it('should be able to show the total price for a given fruit basket', async function () {
 
-        const fruitBasket = basket(pool);
+        await fruitBasket.baskets('Apple', 1, 3.00);
+        await fruitBasket.getprice('Apple', 1, 3.00)
+        let theSum = await fruitBasket.getFruit('Apple')
 
-        await fruitBasket.addfruit('Banana', 4.00);
-        assert.deepEqual([{ sum: 4.00 }], await fruitBasket.getprice(4.00));
+        assert.deepEqual(3.00, theSum[0].price);
+
     });
 
     it('should be able to show the qty of the fruit_basket for a given fruit type', async function () {
 
-        const fruitBasket = basket(pool);
-
-        await fruitBasket.addfruit('Banana', 4.00);
-        assert.deepEqual([{ qty: 1 }], await fruitBasket.getqty(1));
+        await fruitBasket.baskets('Apple', 1, 3.00);
+        await fruitBasket.getqty('Apple', 1, 3.00);
+        let theQty = await fruitBasket.getFruit('Apple')
+   
+        assert.deepEqual(1, theQty[0].qty);
     });
 
 
-});
+});1
