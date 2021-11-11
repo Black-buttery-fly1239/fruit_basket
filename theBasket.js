@@ -12,13 +12,9 @@ module.exports = (pool, fruitBasket) => {
     }
     
     
-    async function updateFruit(fruit_name,qty,price){
-        const fruit = await pool.query('select * from fruit_basket where fruit_name =$1', [fruit_name])
-        if (fruit.rowCount === 0) {
-            await pool.query('insert into fruit_basket  (fruit_name,qty,price) values($1,$2,$3)', [fruit_name,qty,price])
-        } else {
-            await pool.query('update fruit_basket  set qty = qty + qty where fruit_name = $1', [fruit_name])
-        }
+    async function updateFruit(fruit_name){
+            await pool.query('update fruit_basket  set qty = qty + 1 where fruit_name = $1', [fruit_name])
+      
     }
 
     async function getprice(fruit_basket) {

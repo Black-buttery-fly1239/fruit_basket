@@ -20,26 +20,30 @@ describe('The my_fruit_basket_tests database', async function () {
         await pool.query('delete from fruit_basket');
     });
 
-    it('should be able to add the fruit_name from to fruit_basket', async function () {
-
+    it('should be able to add the fruit_name to fruit_basket (Apple basket)', async function () {
 
         await fruitBasket.baskets('Apple', 1, 3.00);
-        await fruitBasket.baskets('Banana', 1, 4.00);
         
-        var getIt = await fruitBasket.getFruit('Apple','Banana')
-        assert.equal(getIt[0].fruit_name, 'Apple','Banana')
+        var getIt = await fruitBasket.getFruit('Apple')
+        assert.equal(getIt[0].fruit_name, 'Apple')
+
+        await fruitBasket.baskets('Banana', 1, 4.00);
+        var get = await fruitBasket.getFruit('Banana')
+        assert.equal(get[0].fruit_name, 'Banana')
+
     });
+    
 
     it('should be abble to update the qty', async function () {
 
-        await fruitBasket.baskets('Apple', 1, 3.00);
-        await fruitBasket.baskets('Banana', 1, 4.00);
 
-        await fruitBasket.updateFruit(['Apple', 1, 3.00]);
-        await fruitBasket.updateFruit(['Banana', 1, 4.00]);
+        await fruitBasket.baskets('Apple',1, 3.00)
+        await fruitBasket.updateFruit('Apple');
+        await fruitBasket.updateFruit('Apple');
 
-        let theupdate = await fruitBasket.getFruit('Apple', 'Banana')
-        assert.deepEqual(1, theupdate[0].qty);
+        const theUpdate = await fruitBasket.getFruit('Apple');
+
+        assert.deepEqual(3, theUpdate[0].qty)
 
 
     });
@@ -70,10 +74,14 @@ describe('The my_fruit_basket_tests database', async function () {
     it('should be able to show the qty of the fruit_basket for a given fruit type (Apple)', async function () {
 
         await fruitBasket.baskets('Apple', 1, 3.00);
-        await fruitBasket.getqty('Banana', 1, 4.00);
-        let theQty = await fruitBasket.getFruit('Apple', 'Banana')
+        await fruitBasket.getqty('Apple', 1, 3.00);
+
+        await fruitBasket.updateFruit('Apple');
+        await fruitBasket.updateFruit('Apple');
+
+        let theQty = await fruitBasket.getFruit('Apple')
    
-        assert.deepEqual(1, theQty[0].qty);
+        assert.deepEqual(3, theQty[0].qty);
     });
 
 
