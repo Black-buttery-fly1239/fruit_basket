@@ -51,8 +51,8 @@ describe('The my_fruit_basket_tests database', async function () {
     it('should be able to show the total price for a given fruit basket which is apple', async function () {
 
         await fruitBasket.baskets('Apple', 1, 3.00);
-        
-        await fruitBasket.getprice('Apple', 1, 3.00);
+        await fruitBasket.getprice('Apple');
+
         let theSum = await fruitBasket.getFruit('Apple')
         
         assert.deepEqual(3.00, theSum[0].price);
@@ -63,7 +63,7 @@ describe('The my_fruit_basket_tests database', async function () {
     it('should be able to show the total price for a given fruit basket which is Banana', async function () {
 
         await fruitBasket.baskets('Banana', 1, 4.00);
-        await fruitBasket.getprice('Banana', 1, 4.00);
+        await fruitBasket.getprice('Banana');
         
         let theSum = await fruitBasket.getFruit('Banana')
 
