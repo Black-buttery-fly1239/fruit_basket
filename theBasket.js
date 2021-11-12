@@ -12,19 +12,19 @@ module.exports = (pool, fruitBasket) => {
     }
     
     
-    async function updateFruit(fruit_name){
-            await pool.query('update fruit_basket  set qty = qty + 1 where fruit_name = $1', [fruit_name])
+    async function updateFruit(fruit_name,qty){
+            await pool.query('update fruit_basket  set qty = qty + $2 where fruit_name = $1', [fruit_name,qty])
       
     }
 
-    async function getprice(fruit_basket) {
-        const priceResult = await pool.query('select sum(price) from fruit_basket where fruit_name = $1', [fruit_basket]);
+    async function getprice(fruit_name) {
+        const priceResult = await pool.query('select sum(price) from fruit_basket where fruit_name = $1', [fruit_name]);
             return priceResult.rows;
 
     }
 
-    async function getqty(fruit_basket) {
-        const qtyResult = await pool.query('select sum(qty) from fruit_basket where fruit_name = $1', [fruit_basket]);
+    async function getqty(fruit_name) {
+        const qtyResult = await pool.query('select sum(qty) from fruit_basket where fruit_name = $1', [fruit_name]);
         if (qtyResult) {
             return qtyResult.rows;
         }

@@ -38,12 +38,11 @@ describe('The my_fruit_basket_tests database', async function () {
 
 
         await fruitBasket.baskets('Apple',1, 3.00)
-        await fruitBasket.updateFruit('Apple');
-        await fruitBasket.updateFruit('Apple');
+        await fruitBasket.updateFruit('Apple', 8);
 
         const theUpdate = await fruitBasket.getFruit('Apple');
 
-        assert.deepEqual(3, theUpdate[0].qty)
+        assert.deepEqual(9, theUpdate[0].qty)
 
 
     });
@@ -74,14 +73,14 @@ describe('The my_fruit_basket_tests database', async function () {
     it('should be able to show the qty of the fruit_basket for a given fruit type (Apple)', async function () {
 
         await fruitBasket.baskets('Apple', 1, 3.00);
-        await fruitBasket.getqty('Apple', 1, 3.00);
+        await fruitBasket.getqty('Apple');
 
-        await fruitBasket.updateFruit('Apple');
-        await fruitBasket.updateFruit('Apple');
+        await fruitBasket.updateFruit('Apple',5);
+        
 
         let theQty = await fruitBasket.getFruit('Apple')
    
-        assert.deepEqual(3, theQty[0].qty);
+        assert.deepEqual(6, theQty[0].qty);
     });
 
 
